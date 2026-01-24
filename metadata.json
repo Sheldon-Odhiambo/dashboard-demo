@@ -1,0 +1,9 @@
+
+{
+  "name": "Crat Lab - Professional Talent Network",
+  "description": "A robust talent-driven professional platform with integrated community feeds, AI-powered matching, and availability timelines for students and organizations.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
