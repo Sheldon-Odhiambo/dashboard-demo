@@ -1,5 +1,5 @@
 
-import { Post, UserRole, Opportunity } from './types';
+import { Post, UserRole, Opportunity, CandidateMatch, Certificate } from './types';
 
 export const MOCK_POSTS: Post[] = [
   {
@@ -36,24 +36,25 @@ export const MOCK_POSTS: Post[] = [
     comments: [],
     timestamp: '5h ago',
     isPublic: true
+  }
+];
+
+export const MOCK_CERTIFICATES: Certificate[] = [
+  {
+    id: 'cert1',
+    title: 'B.S. Interaction Design',
+    issuer: 'Tech University',
+    year: '2024',
+    category: 'Bachelors',
+    proofImageUrl: 'https://picsum.photos/seed/cert1/400/300'
   },
   {
-    id: '3',
-    authorId: 'a3',
-    authorName: 'Meta Design Lab',
-    authorAvatar: 'https://picsum.photos/seed/meta/100',
-    authorRole: UserRole.ORGANIZATION,
-    authorVerified: true,
-    type: 'Talent Call',
-    title: 'Looking for 3D Artist Interns (Fall 2024)',
-    content: 'We are expanding our avatar customization team. Seeking students with proficiency in Blender and Substance Painter. Remote/Hybrid options available.',
-    tags: ['Hiring', '3D', 'Blender', 'Internship'],
-    likes: 245,
-    comments: [
-      { id: 'c3', userId: 'u3', userName: 'Jordan Lee', content: 'Applied! Hoping for the best.', timestamp: '1h ago' }
-    ],
-    timestamp: '1d ago',
-    isPublic: true
+    id: 'cert2',
+    title: 'Professional UI/UX Specialist',
+    issuer: 'Google Career Certs',
+    year: '2023',
+    category: 'Certification',
+    proofImageUrl: 'https://picsum.photos/seed/cert2/400/300'
   }
 ];
 
@@ -68,16 +69,10 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     hoursPerWeek: 20,
     fit: 'Fits',
     gaps: ['Micro-interactions']
-  },
-  {
-    id: 'o2',
-    orgName: 'Future Tech Co',
-    role: 'Frontend Apprentice',
-    type: 'Apprenticeship',
-    matchScore: 82,
-    timeline: 'Oct - Jan',
-    hoursPerWeek: 15,
-    fit: 'Partial',
-    gaps: ['State Management']
   }
+];
+
+export const MOCK_CANDIDATES: CandidateMatch[] = [
+  { id: 'c1', name: 'Sarah Miller', score: 94, institution: 'Stanford', status: 'Fits', avatar: 'Sarah', seeking: ['Internship', 'Volunteer'] },
+  { id: 'c2', name: 'David Kim', score: 88, institution: 'Berkeley', status: 'Partial', avatar: 'David', seeking: ['Apprenticeship'] }
 ];

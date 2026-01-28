@@ -2,13 +2,13 @@
 import React from 'react';
 import { 
   Search, 
-  Bell, 
   MessageSquare, 
   Home,
   User,
   CheckCircle,
   ChevronDown,
-  LayoutDashboard
+  LayoutDashboard,
+  Briefcase
 } from 'lucide-react';
 import { UserRole } from '../types';
 import { ViewState } from '../App';
@@ -23,6 +23,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ userRole, activeView, onViewChange, onToggleRole }) => {
   const navItems = [
     { id: 'HOME', label: 'Home', icon: Home },
+    { id: 'ALL_OPPORTUNITIES', label: 'Opportunities', icon: Briefcase },
     { id: 'MESSAGES', label: 'Messaging', icon: MessageSquare },
     { id: 'DASHBOARD', label: 'Me', icon: User },
   ];
@@ -34,16 +35,19 @@ const Header: React.FC<HeaderProps> = ({ userRole, activeView, onViewChange, onT
         <div className="flex items-center gap-4 flex-1">
           <div 
             onClick={() => onViewChange('HOME')}
-            className="w-10 h-10 bg-[#facc15] rounded-lg flex items-center justify-center font-black text-black text-xl cursor-pointer hover:scale-105 transition-transform"
+            className="group flex items-center gap-2 cursor-pointer"
           >
-            CL
+            <div className="w-10 h-10 bg-[#facc15] rounded-lg flex items-center justify-center font-black text-black text-xl hover:scale-105 transition-transform">
+              CC
+            </div>
+            <span className="hidden lg:block text-[#facc15] font-black text-xl tracking-tighter">Craftlab Careers</span>
           </div>
           <div className="hidden sm:block max-w-xs w-full relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input 
               type="text" 
-              placeholder="Search..." 
-              className="w-full bg-gray-900 border border-gray-700 text-white pl-10 pr-4 py-1.5 rounded text-sm focus:outline-none focus:border-[#facc15] transition-colors"
+              placeholder="Search talent or roles..." 
+              className="w-full bg-gray-900 border border-gray-700 text-white pl-10 pr-4 py-1.5 rounded text-sm focus:outline-none focus:border-[#facc15] transition-colors font-medium"
             />
           </div>
         </div>
@@ -61,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ userRole, activeView, onViewChange, onT
               }`}
             >
               <item.icon className={`w-5 h-5 ${activeView === item.id ? 'text-[#facc15]' : 'group-hover:scale-110'} transition-transform`} />
-              <span className="text-[10px] font-medium mt-1 uppercase tracking-tight">{item.label}</span>
+              <span className="text-[10px] font-black mt-1 uppercase tracking-tight">{item.label}</span>
             </button>
           ))}
         </nav>
@@ -71,40 +75,35 @@ const Header: React.FC<HeaderProps> = ({ userRole, activeView, onViewChange, onT
           <div className="h-8 w-px bg-gray-700 mx-1 hidden lg:block"></div>
           
           <div className="relative group">
-            <button className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-800 transition-colors">
+            <button className="flex items-center gap-3 p-1 rounded-full hover:bg-gray-800 transition-colors">
               <img 
                 src={userRole === UserRole.STUDENT ? "https://picsum.photos/seed/alex/100" : "https://picsum.photos/seed/lab/100"} 
                 alt="Avatar" 
-                className="w-8 h-8 rounded-full border border-[#facc15]"
+                className="w-8 h-8 rounded-lg border border-[#facc15]"
               />
               <div className="hidden lg:block text-left">
-                <div className="flex items-center gap-1">
-                  <span className="text-white font-bold text-xs truncate max-w-[80px]">
-                    {userRole === UserRole.STUDENT ? 'Alex' : 'Innovate'}
+                <div className="flex items-center gap-1.5">
+                  <span className="text-white font-black text-base tracking-tight truncate max-w-[140px]">
+                    {userRole === UserRole.STUDENT ? 'Alex Rivers' : 'Innovate Labs'}
                   </span>
-                  <CheckCircle className="w-2.5 h-2.5 text-[#facc15]" fill="currentColor" />
+                  <CheckCircle className="w-3.5 h-3.5 text-[#facc15]" fill="currentColor" />
                 </div>
               </div>
-              <ChevronDown className="w-3 h-3 text-gray-400" />
+              <ChevronDown className="w-4 h-4 text-gray-400" />
             </button>
             
-            {/* Simple Dropdown for Role Switching (Demo Only) */}
-            <div className="absolute right-0 top-full mt-2 w-48 bg-black border border-gray-800 rounded-lg shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+            <div className="absolute right-0 top-full mt-2 w-56 bg-black border border-gray-800 rounded-xl shadow-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                <button 
                  onClick={onToggleRole}
-                 className="w-full text-left px-4 py-2 text-xs font-bold text-gray-300 hover:text-[#facc15] hover:bg-gray-900 flex items-center gap-2"
+                 className="w-full text-left px-4 py-3 text-[10px] font-black text-gray-300 hover:text-[#facc15] hover:bg-gray-900 flex items-center gap-3 uppercase tracking-widest"
                >
                  <LayoutDashboard className="w-4 h-4" />
-                 Switch to {userRole === UserRole.STUDENT ? 'Organization' : 'Student'}
+                 Switch to {userRole === UserRole.STUDENT ? 'Org' : 'Student'}
                </button>
                <div className="border-t border-gray-800 my-1"></div>
-               <button className="w-full text-left px-4 py-2 text-xs font-bold text-gray-300 hover:text-[#facc15] hover:bg-gray-900">Sign Out</button>
+               <button className="w-full text-left px-4 py-3 text-[10px] font-black text-gray-300 hover:text-[#facc15] hover:bg-gray-900 uppercase tracking-widest">Sign Out</button>
             </div>
           </div>
-          
-          <button className="p-2 text-gray-400 hover:text-[#facc15] transition-colors relative lg:hidden">
-            <Bell className="w-5 h-5" />
-          </button>
         </div>
       </div>
     </header>
