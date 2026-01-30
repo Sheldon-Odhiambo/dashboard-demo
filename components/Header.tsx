@@ -1,26 +1,33 @@
 
 import React from 'react';
-import { 
-  Search, 
-  MessageSquare, 
+import {
+  Search,
+  MessageSquare,
   Home,
   User,
   CheckCircle,
   ChevronDown,
-  LayoutDashboard,
+  LogOut,
   Briefcase
 } from 'lucide-react';
 import { UserRole } from '../types';
 import { ViewState } from '../App';
+import { Profile } from '../lib/supabase';
+import { useAuth } from '../lib/auth';
 
 interface HeaderProps {
   userRole: UserRole;
   activeView: ViewState;
   onViewChange: (view: ViewState) => void;
-  onToggleRole: () => void;
+  profile: Profile;
 }
 
-const Header: React.FC<HeaderProps> = ({ userRole, activeView, onViewChange, onToggleRole }) => {
+const Header: React.FC<HeaderProps> = ({ userRole, activeView, onViewChange, profile }) => {
+  const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
   const navItems = [
     { id: 'HOME', label: 'Home', icon: Home },
     { id: 'ALL_OPPORTUNITIES', label: 'Opportunities', icon: Briefcase },
@@ -76,32 +83,30 @@ const Header: React.FC<HeaderProps> = ({ userRole, activeView, onViewChange, onT
           
           <div className="relative group">
             <button className="flex items-center gap-3 p-1 rounded-full hover:bg-gray-800 transition-colors">
-              <img 
-                src={userRole === UserRole.STUDENT ? "https://picsum.photos/seed/alex/100" : "https://picsum.photos/seed/lab/100"} 
-                alt="Avatar" 
+              <img
+                src={profile.avatar_url || `https://picsum.photos/seed/${profile.id}/100`}
+                alt="Avatar"
                 className="w-8 h-8 rounded-lg border border-[#facc15]"
               />
               <div className="hidden lg:block text-left">
                 <div className="flex items-center gap-1.5">
                   <span className="text-white font-black text-base tracking-tight truncate max-w-[140px]">
-                    {userRole === UserRole.STUDENT ? 'Alex Rivers' : 'Innovate Labs'}
+                    {profile.name}
                   </span>
                   <CheckCircle className="w-3.5 h-3.5 text-[#facc15]" fill="currentColor" />
                 </div>
               </div>
               <ChevronDown className="w-4 h-4 text-gray-400" />
             </button>
-            
+
             <div className="absolute right-0 top-full mt-2 w-56 bg-black border border-gray-800 rounded-xl shadow-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-               <button 
-                 onClick={onToggleRole}
-                 className="w-full text-left px-4 py-3 text-[10px] font-black text-gray-300 hover:text-[#facc15] hover:bg-gray-900 flex items-center gap-3 uppercase tracking-widest"
+               <button
+                 onClick={handleSignOut}
+                 className="w-full text-left px-4 py-3 text-[10px] font-black text-gray-300 hover:text-[#facc15] hover:bg-gray-900 uppercase tracking-widest flex items-center gap-3"
                >
-                 <LayoutDashboard className="w-4 h-4" />
-                 Switch to {userRole === UserRole.STUDENT ? 'Org' : 'Student'}
+                 <LogOut className="w-4 h-4" />
+                 Sign Out
                </button>
-               <div className="border-t border-gray-800 my-1"></div>
-               <button className="w-full text-left px-4 py-3 text-[10px] font-black text-gray-300 hover:text-[#facc15] hover:bg-gray-900 uppercase tracking-widest">Sign Out</button>
             </div>
           </div>
         </div>

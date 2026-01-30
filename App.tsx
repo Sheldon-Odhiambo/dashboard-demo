@@ -11,36 +11,51 @@ import PostOpportunityPage from './components/PostOpportunityPage';
 import ViewMatchesPage from './components/ViewMatchesPage';
 import OpportunitiesPage from './components/OpportunitiesPage';
 import PostDetailPage from './components/PostDetailPage';
+import AuthPage from './components/AuthPage';
 import { UserRole, Post } from './types';
+import { useAuth } from './lib/auth';
 
-export type ViewState = 
-  | 'HOME' 
-  | 'DASHBOARD' 
-  | 'NETWORK' 
-  | 'JOBS' 
-  | 'MESSAGES' 
-  | 'EDIT_PROFILE' 
-  | 'CREATE_POST' 
-  | 'POST_OPPORTUNITY' 
+export type ViewState =
+  | 'HOME'
+  | 'DASHBOARD'
+  | 'NETWORK'
+  | 'JOBS'
+  | 'MESSAGES'
+  | 'EDIT_PROFILE'
+  | 'CREATE_POST'
+  | 'POST_OPPORTUNITY'
   | 'VIEW_MATCHES'
   | 'ALL_OPPORTUNITIES'
   | 'POST_DETAIL';
 
 const App: React.FC = () => {
-  const [currentUserRole, setCurrentUserRole] = useState<UserRole>(UserRole.STUDENT);
+  const { user, profile, loading } = useAuth();
   const [activeView, setActiveView] = useState<ViewState>('HOME');
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-
-  const toggleRole = () => {
-    setCurrentUserRole(prev => 
-      prev === UserRole.STUDENT ? UserRole.ORGANIZATION : UserRole.STUDENT
-    );
-  };
 
   const handleViewPost = (post: Post) => {
     setSelectedPost(post);
     setActiveView('POST_DETAIL');
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 bg-[#facc15] rounded-2xl mx-auto flex items-center justify-center font-black text-black text-2xl animate-pulse">
+            CC
+          </div>
+          <p className="text-xs font-black text-gray-400 uppercase tracking-widest">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || !profile) {
+    return <AuthPage />;
+  }
+
+  const currentUserRole = profile.user_type === 'STUDENT' ? UserRole.STUDENT : UserRole.ORGANIZATION;
 
   const renderContent = () => {
     switch (activeView) {
@@ -73,13 +88,13 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 pb-12">
-      <Header 
-        userRole={currentUserRole} 
-        activeView={activeView} 
+      <Header
+        userRole={currentUserRole}
+        activeView={activeView}
         onViewChange={setActiveView}
-        onToggleRole={toggleRole}
+        profile={profile}
       />
-      
+
       <main className="max-w-7xl mx-auto px-4 pt-20">
         {renderContent()}
       </main>
